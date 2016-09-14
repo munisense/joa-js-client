@@ -1,0 +1,41 @@
+{
+  "name": "joa-js-client",
+  "version": "0.0.1",
+  "description": "An interface to be used for communication with the backoffice of Munisense.",
+  "main": "./dist/joa-0.0.1.js",
+  "directories": {
+    "doc": "doc",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/munisense/joa-js-client.git"
+  },
+  "keywords": [
+    "munisense",
+    "joa",
+    "backoffice",
+    "javascript"
+  ],
+  "author": "Alex Burghardt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/munisense/joa-js-client/issues"
+  },
+  "homepage": "https://github.com/munisense/joa-js-client#readme",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.7",
+    "gulp-yuidoc": "^0.1.2",
+    "jshint": "^2.9.3",
+    "jshint-stylish": "^2.2.1"
+  }
+}
