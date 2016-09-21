@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Joa</title>
+    <title>JOA</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -41,13 +41,13 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/Joa.html">Joa</a></li>
+                <li><a href="../classes/JOA.html">JOA</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="../modules/Joa.html">Joa</a></li>
+                <li><a href="../modules/JOA.html">JOA</a></li>
             
             </ul>
         </div>
@@ -84,7 +84,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>Joa Class</h1>
+                        <h1>JOA Class</h1>
 <div class="box meta">
     
 
@@ -92,13 +92,13 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l11"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:11</code></a>
+            Defined in: <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l84"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:84</code></a>
         </div>
     
 
     
         
-            Module: <a href="../modules/Joa.html">Joa</a>
+            Module: <a href="../modules/JOA.html">JOA</a>
         
     
 
@@ -108,17 +108,19 @@
 
 
 <div class="box intro">
-    <p>Joa is an object used to communicate with the backoffice of Munisense.<br/>
-Note that the keyword <code>new</code> is not required to create a new instance of the Ratio object, since this is done for you.<br/>
-In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value )</code>.</p>
+    <p>JOA is an object used to communicate with the backoffice of Munisense. 
+This object will be able to construct a (syntactically) valid payload according to the ms-tech-141003-3 specification.
+This implementation only supports the MuniRPC version 2 protocol (JOA3).<br/>
+There is no need to new this object as that is being done for you. Usage is through the JOA() object.
+Note: all requests made to the backoffice are made asynchronously.</p>
 
 </div>
 
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_Joa" class="method item">
-    <h3 class="name"><code>Joa</code></h3>
+        <div id="method_JOA" class="method item">
+    <h3 class="name"><code>JOA</code></h3>
 
     
         <div class="args">
@@ -126,7 +128,7 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
             
                 <li class="arg">
                     
-                        <code class="optional">[db]</code>
+                        <code class="optional">[url]</code>
                     
                 </li>
             
@@ -136,7 +138,7 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
 
     
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Joa.html" class="crosslink">Joa</a></span>
+            <span class="type"><a href="../classes/JOA.html" class="crosslink">JOA</a></span>
         </span>
     
 
@@ -163,7 +165,7 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l11"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:11</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l84"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:84</code></a>
         
         </p>
 
@@ -185,7 +187,7 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
             
                 <li class="param">
                     
-                        <code class="param-name optional">[db]</code>
+                        <code class="param-name optional">[url]</code>
                         <span class="type">String</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
@@ -193,7 +195,7 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
                     
 
                     <div class="param-description">
-                        <p>an arbitrair argument used for debugging the object.</p>
+                        <p>an optional parameter used to set the backoffice url.</p>
 
                     </div>
 
@@ -211,9 +213,9 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
             <div class="returns-description">
                 
                     
-                        <span class="type"><a href="../classes/Joa.html" class="crosslink">Joa</a></span>:
+                        <span class="type"><a href="../classes/JOA.html" class="crosslink">JOA</a></span>:
                     
-                    <p>object that can be used to communicate to the backoffice.</p>
+                    <p>An object that can be used to communicate to the backoffice.</p>
 
                 
             </div>
@@ -225,7 +227,7 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p> Joa(&quot;hello word&quot;) outputs hello world to the console;</p>
+                <pre class="code prettyprint"><code>JOA(&quot;https://www.google.com&quot;) initialises the JOA object with Google as the backoffice url;</code></pre>
 
             </div>
         </div>
@@ -240,6 +242,8 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
         
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+        
         
             <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
         
@@ -252,6 +256,91 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
             <h2 class="off-left">Item Index</h2>
 
             
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.addZCLReport">JOA.addZCLReport</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.clearMessages">JOA.clearMessages</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.constructHeader">JOA.constructHeader</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.constructJOAPayload">JOA.constructJOAPayload</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.constructMessages">JOA.constructMessages</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.generateId">JOA.generateId</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.headers">JOA.headers</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.post">JOA.post</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.removeMessage">JOA.removeMessage</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.setUrl">JOA.setUrl</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.toString">JOA.toString</a>
+
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
+            
 
             
                 <div class="index-section properties">
@@ -260,7 +349,42 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
                     <ul class="index-list properties">
                         
                             <li class="index-item property">
-                                <a href="#property_Ratio.backofficeUrl">Ratio.backofficeUrl</a>
+                                <a href="#property_JOA.char">JOA.char</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_JOA.header">JOA.header</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_JOA.messageId">JOA.messageId</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_JOA.messages">JOA.messages</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_JOA.messageType">JOA.messageType</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_JOA.url">JOA.url</a>
 
                                 
                                 
@@ -276,14 +400,1375 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
         </div>
 
         
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_JOA.addZCLReport" class="method item">
+    <h3 class="name"><code>JOA.addZCLReport</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[eui64]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[endpointId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[profileId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[clusterId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[attributeId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[dataTypeId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[timestamp]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[value]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l205"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:205</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Adds a ZCL report to the message queue. <br/></p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[eui64]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>a 64bits address defined as an IEEE standard.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[endpointId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>when a single message device has multiple sensors of the same type, the endpointId
+can be used to enumerate the sensors. The range of allowed values is 1 to 239. The best value to use when only
+a single endpoint is used on a device is: 10 (0x0a). This field is also optional and when null is supplied 
+0x0a will be used.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[profileId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>an optional ZigBee specific field, if null is supplied the default 0xf100 will be used.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[clusterId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>clusters are an organizational unit of attributes of the same type. For example,
+all temperature related attributes are defined in clusterid: 1026 (0x0402). All cluster id&#39;s must be coordinated
+with Munisense before usage.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[attributeId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>attributes are the most specific fields defining a message. For example, the
+calibration value in the temperature cluster has an attributeid of 5 (0x005), has a unit in C (celsius) and has
+a data type int16s (0x29) and is presumed to be delivered with a scale factor of 0.01. Lists of definition are
+available from ZigBee specifications or vendor specific clusters can be defined coordinated with Munisense.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[dataTypeId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>each attribute has a fixed data type. Sending this value is an indication how values
+submitted should be handled and must be consistent throughout the implementation. Data types are defined in the
+ZigBee specification.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[timestamp]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the timestamp is used to indicate the occurreence of a message. This value is a
+positive numerical value up to 48 bits in size indicating the number of milliseconds since 1970-01-01 00:00:00
+UTC, not adjusting for daylight savings time or leap seconds.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[value]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the value is an ASCII representation of the reported value. The datatypeId indicates how
+a value should be notated:<br /></p>
+<ul>
+<li>Integer(0x20-0x27, 0x28-0x2f): The value is numeriv and optionally negative using a &#39;-&#39; minues
+indication in front of the value for signed values.<br /></li>
+<li>Floating point (0x38-0x3a): Values are numeric, separating the integral and fractional parts with a &#39;.&#39; dot.<br /></li>
+<li>Character/octet string (0x41-0x44): Value starting with one or two bytes indicating the length of the field
+completely encoded with base64.<br /></li>
+<li>Boolean (0x10): 0 for false, 1 for true.<br /></li>
+<li>Time (0xe2): This value is a positive numerical value up to 32bits in size indidcating the number of milliseconds
+since 2000-01-01 00:00:00 UTC, not adjusting for daylight savings time or leap seconds.<br /></li>
+<li>Enumerations (0x30-0x31): Numeric value indicating an enumeration.</li>
+</ul>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Object</span>:
+                    
+                    <p>the inserted report.</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.clearMessages" class="method item">
+    <h3 class="name"><code>JOA.clearMessages</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l257"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:257</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Clears all inserted messages. This function will also be invoked when a successful post call was made. <br/></p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.constructHeader" class="method item">
+    <h3 class="name"><code>JOA.constructHeader</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[cb]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l129"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:129</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Tries to construct a valid header for the current message. <br />
+Note: valid, in this context, means that all required fields are set and the result 
+header string is constructed according to the specification, no validation is done
+on the values of the header fields, the user is responsible for correct values.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[cb]</code>
+                        <span class="type">Function</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>a callback function with an error and a result parameter.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.constructJOAPayload" class="method item">
+    <h3 class="name"><code>JOA.constructJOAPayload</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[cb]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l293"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:293</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Will convert all message objects in the queue to a valid JOA message. <br/></p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[cb]</code>
+                        <span class="type">Function</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>a callback function with an error and a result parameter.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.constructMessages" class="method item">
+    <h3 class="name"><code>JOA.constructMessages</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Array</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l176"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:176</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Will convert all message objects in the queue to a syntactically correct JOA message. <br/></p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Array</span>:
+                    
+                    <p>An array consisting of all converted JOA messages.</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.generateId" class="method item">
+    <h3 class="name"><code>JOA.generateId</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Integer</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l281"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:281</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Generates an unique id for this particular instance of JOA. These id&#39;s will be used for messages.
+An id is a 32bit unsigned integer that is being kept track of and incremented each time this function is called. 
+This process is as suggested by the JOA specification.<br/></p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Integer</span>:
+                    
+                    <p>An incremented value to be used as an id, unique for this current instance of JOA.</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.headers" class="method item">
+    <h3 class="name"><code>JOA.headers</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[obj]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l111"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:111</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Intialises the header fields in one go with an options object.<br/></p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[obj]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>options object containing all headers to be set.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>JOA({
+   attribute: {
+       vendor: &quot;jwz&quot;,
+       time: &quot;time&quot;
+   },
+   gatewayIdentifier: &quot;0.0.0.0&quot;,
+   protocolVersion: &quot;MuniRPCv2:&quot;</code></pre>
+<p>   })</p>
+
+            </div>
+        </div>
+    
+</div>
+
+                
+                    <div id="method_JOA.post" class="method item">
+    <h3 class="name"><code>JOA.post</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[cb]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l308"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:308</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Posts a constructed JOA payload to the backoffice of Munisense. 
+Will clear the message queue and return the results as reported by the backoffice upon a
+succcessful post. <br/></p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[cb]</code>
+                        <span class="type">Function</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>a function used to call back to whenever the HTTP post finishes.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.removeMessage" class="method item">
+    <h3 class="name"><code>JOA.removeMessage</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l265"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:265</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Removes a sinlge message from the queue. <br/></p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Object</span>:
+                    
+                    <p>the removed object or {} when nothing was removed.</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.setUrl" class="method item">
+    <h3 class="name"><code>JOA.setUrl</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[url]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l102"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:102</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Sets the url for the backoffice. <br /></p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[url]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the url where the backoffice is located.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.toString" class="method item">
+    <h3 class="name"><code>JOA.toString</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l329"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:329</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>A representation of the object in the format of a composed JOA payload (see also &#39;Example&#39;
+in the JOA specification document). 
+It could also contain errors, if, for example, the header couldn&#39;t be contructed this
+toString() function will output the error message instead of the payload.<br /></p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">String</span>:
+                    
+                    <p>A string based representation of a composed JOA payload.</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+            </div>
+        
 
         
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
                 
-                    <div id="property_Ratio.backofficeUrl" class="property item">
-    <h3 class="name"><code>Ratio.backofficeUrl</code></h3>
+                    <div id="property_JOA.char" class="property item">
+    <h3 class="name"><code>JOA.char</code></h3>
+    <span class="type">Object</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l18"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:18</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Special characters used by the JOA protocol. <br/></p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_JOA.header" class="property item">
+    <h3 class="name"><code>JOA.header</code></h3>
+    <span class="type">Object</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l28"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:28</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>The header object used to construct a valid header for a particular request. <br/><br/>
+gatewayIdentifier: The gateway identifier is a 32bit value formatted as an IP address.
+This IP address will not be the address of the sending node or the backoffice, but
+a virtual identifier assigned to this device.<br/>
+The address will be an address in the private range defined in RFC1918.<br/><br/>
+protocolVersion: The HTTP POST content starts with a header indicating protocol and version.
+This contains the protocol-and-version string to be used in the header. Default is MuniRPCv2:.
+Note: this is a private property and cannot be changed<br/><br/>
+attribute: A header can also contain an optional comma separated list of value-attribute pairs.<br/>
+attribute.vendor: The &#39;vendor&#39; attribute is a string containing the assigned vendor name. A vendor field is required.<br/>
+attribute.hash: The &#39;hash&#39; attribute is the MD5 hash of the shared secret concatenated with the contents of the full
+HTTP POST, including the header without a hash attribute. This value is required when using security level 3 or 4.<br/>
+attribute.secret: The &#39;secret&#39; attributes is the clear-text shared secret. This value is required for security level 2.<br/>
+attribute.time: The &#39;time&#39; attribute indicates a time request. This attribute does not need a attribute-value separator or a value.
+The reply messages will include a time reply.</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_JOA.messageId" class="property item">
+    <h3 class="name"><code>JOA.messageId</code></h3>
+    <span class="type">Integer</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l57"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:57</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>A counter to be used for message id&#39;s. <br/></p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_JOA.messages" class="property item">
+    <h3 class="name"><code>JOA.messages</code></h3>
+    <span class="type">Array</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l77"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:77</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>A queue (array) containing all message objects.<br/></p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_JOA.messageType" class="property item">
+    <h3 class="name"><code>JOA.messageType</code></h3>
+    <span class="type">Object</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l64"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:64</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>An object to be used as an enumerator for message types. <br/></p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_JOA.url" class="property item">
+    <h3 class="name"><code>JOA.url</code></h3>
     <span class="type">String</span>
 
     
@@ -305,7 +1790,7 @@ In otherwords, <code>new Ratio( value )</code> is the same as <code>Ratio( value
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l26"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:26</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l11"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:11</code></a>
         
         </p>
 

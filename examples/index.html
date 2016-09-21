@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+</body>
+<script src="../dist/JOA-0.0.1.js".js></script>
+    <script>
+        JOA("http://www.google.com");
+        
+        //EXAMPLE; set individual headers:
+        JOA.header.gatewayIdentifier = "0.0.0.0";
+        JOA.header.attribute.time = "time";
+        JOA.header.attribute.hash = "b324867ebe1efa36abb1cbb39424f95d";
+        JOA.header.attribute.secret = "simplepassword";
+        JOA.header.attribute.vendor = "debug4";
+        
+        //EXAMPLE; set JOA headers in one go:
+        JOA.headers({
+            attribute: {
+                vendor: "debug4",
+                time: "time",
+                hash: "b324867ebe1efa36abb1cbb39424f95d",
+                secret: "simplepassword"
+            },
+            gatewayIdentifier: "0.0.0.0"
+        });
+        
+        JOA.debug(function(err, result) {
+            console.log(err);
+            console.log(result);
+        });
+    </script>
+</body>
+</html>

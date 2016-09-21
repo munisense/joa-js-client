@@ -1,16 +1,16 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "Joa"
+        "JOA"
     ],
     "modules": [
-        "Joa"
+        "JOA"
     ],
     "allModules": [
         {
-            "displayName": "Joa",
-            "name": "Joa",
-            "description": "Joa.js, provides a way to communicate with the backoffice of Munisense using Javascript.\nCreated by Alex Burghardt, https://github.com/aal89\nlicense MIT, http://www.opensource.org/licenses/mit-license\nProject Page: https://github.com/munisense/joa-js-client"
+            "displayName": "JOA",
+            "name": "JOA",
+            "description": "JOA.js, provides a way to communicate with the backoffice of Munisense using Javascript.<br />\nCreated by Alex Burghardt, https://github.com/aal89<br />\nlicense MIT, http://www.opensource.org/licenses/mit-license<br />\nProject Page: https://github.com/munisense/JOA-js-client<br />"
         }
     ]
 } };
