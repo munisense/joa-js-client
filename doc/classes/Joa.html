@@ -92,7 +92,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l84"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:84</code></a>
+            Defined in: <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l86"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:86</code></a>
         </div>
     
 
@@ -165,7 +165,7 @@ Note: all requests made to the backoffice are made asynchronously.</p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l84"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:84</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l86"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:86</code></a>
         
         </p>
 
@@ -262,6 +262,27 @@ Note: all requests made to the backoffice are made asynchronously.</p>
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
+                                <a href="#method_JOA.addTime">JOA.addTime</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.addZCLCommand">JOA.addZCLCommand</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.addZCLMultiReport">JOA.addZCLMultiReport</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_JOA.addZCLReport">JOA.addZCLReport</a>
 
                                 
@@ -304,7 +325,21 @@ Note: all requests made to the backoffice are made asynchronously.</p>
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_JOA.hashJOAPayload">JOA.hashJOAPayload</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_JOA.headers">JOA.headers</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_JOA.md5">JOA.md5</a>
 
                                 
                                 
@@ -404,6 +439,688 @@ Note: all requests made to the backoffice are made asynchronously.</p>
                 <h2 class="off-left">Methods</h2>
 
                 
+                    <div id="method_JOA.addTime" class="method item">
+    <h3 class="name"><code>JOA.addTime</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[timestamp]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l362"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:362</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Adds a Time to the message queue. <br/></p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[timestamp]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the timestamp to add to the queue.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Object</span>:
+                    
+                    <p>the inserted report.</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.addZCLCommand" class="method item">
+    <h3 class="name"><code>JOA.addZCLCommand</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[eui64]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[endpointId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[profileId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[clusterId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[isClusterSpecific]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[commandId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[timestamp]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[value]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l319"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:319</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Adds a ZCL command to the message queue. <br/></p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[eui64]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>a 64bits address defined as an IEEE standard.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[endpointId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>when a single message device has multiple sensors of the same type, the endpointId
+can be used to enumerate the sensors. The range of allowed values is 1 to 239. The best value to use when only
+a single endpoint is used on a device is: 10 (0x0a). This field is also optional and when null is supplied 
+0x0a will be used.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[profileId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>an optional ZigBee specific field, if null is supplied the default 0xf100 will be used.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[clusterId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>clusters are an organizational unit of attributes of the same type. For example,
+all temperature related attributes are defined in clusterid: 1026 (0x0402). All cluster id&#39;s must be coordinated
+with Munisense before usage.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[isClusterSpecific]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>attributes are the most specific fields defining a message. For example, the
+calibration value in the temperature cluster has an attributeid of 5 (0x005), has a unit in C (celsius) and has
+a data type int16s (0x29) and is presumed to be delivered with a scale factor of 0.01. Lists of definition are
+available from ZigBee specifications or vendor specific clusters can be defined coordinated with Munisense.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[commandId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>each attribute has a fixed data type. Sending this value is an indication how values
+submitted should be handled and must be consistent throughout the implementation. Data types are defined in the
+ZigBee specification.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[timestamp]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the timestamp is used to indicate the occurreence of a message. This value is a
+positive numerical value up to 48 bits in size indicating the number of milliseconds since 1970-01-01 00:00:00
+UTC, not adjusting for daylight savings time or leap seconds.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[value]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the value in an ASCII representation of the reporte values.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Object</span>:
+                    
+                    <p>the inserted report.</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.addZCLMultiReport" class="method item">
+    <h3 class="name"><code>JOA.addZCLMultiReport</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[eui64]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[endpointId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[profileId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[clusterId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[attributeId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[dataTypeId]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[timestamp]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[values]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l266"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:266</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Adds a ZCL Multi report to the message queue. <br/></p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[eui64]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>a 64bits address defined as an IEEE standard.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[endpointId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>when a single message device has multiple sensors of the same type, the endpointId
+can be used to enumerate the sensors. The range of allowed values is 1 to 239. The best value to use when only
+a single endpoint is used on a device is: 10 (0x0a). This field is also optional and when null is supplied 
+0x0a will be used.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[profileId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>an optional ZigBee specific field, if null is supplied the default 0xf100 will be used.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[clusterId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>clusters are an organizational unit of attributes of the same type. For example,
+all temperature related attributes are defined in clusterid: 1026 (0x0402). All cluster id&#39;s must be coordinated
+with Munisense before usage.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[attributeId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>attributes are the most specific fields defining a message. For example, the
+calibration value in the temperature cluster has an attributeid of 5 (0x005), has a unit in C (celsius) and has
+a data type int16s (0x29) and is presumed to be delivered with a scale factor of 0.01. Lists of definition are
+available from ZigBee specifications or vendor specific clusters can be defined coordinated with Munisense.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[dataTypeId]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>each attribute has a fixed data type. Sending this value is an indication how values
+submitted should be handled and must be consistent throughout the implementation. Data types are defined in the
+ZigBee specification.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[timestamp]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the timestamp is used to indicate the occurreence of a message. This value is a
+positive numerical value up to 48 bits in size indicating the number of milliseconds since 1970-01-01 00:00:00
+UTC, not adjusting for daylight savings time or leap seconds.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[values]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>an array containing the values in an ASCII representation of the reported values.
+The datatypeId indicates how a value should be notated:<br /></p>
+<ul>
+<li>Integer(0x20-0x27, 0x28-0x2f): The value is numeriv and optionally negative using a &#39;-&#39; minues
+indication in front of the value for signed values.<br /></li>
+<li>Floating point (0x38-0x3a): Values are numeric, separating the integral and fractional parts with a &#39;.&#39; dot.<br /></li>
+<li>Character/octet string (0x41-0x44): Value starting with one or two bytes indicating the length of the field
+completely encoded with base64.<br /></li>
+<li>Boolean (0x10): 0 for false, 1 for true.<br /></li>
+<li>Time (0xe2): This value is a positive numerical value up to 32bits in size indidcating the number of milliseconds
+since 2000-01-01 00:00:00 UTC, not adjusting for daylight savings time or leap seconds.<br /></li>
+<li>Enumerations (0x30-0x31): Numeric value indicating an enumeration.</li>
+</ul>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Object</span>:
+                    
+                    <p>the inserted report.</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
                     <div id="method_JOA.addZCLReport" class="method item">
     <h3 class="name"><code>JOA.addZCLReport</code></h3>
 
@@ -492,7 +1209,7 @@ Note: all requests made to the backoffice are made asynchronously.</p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l205"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:205</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l214"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:214</code></a>
         
         </p>
 
@@ -729,7 +1446,7 @@ since 2000-01-01 00:00:00 UTC, not adjusting for daylight savings time or leap s
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l257"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:257</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l378"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:378</code></a>
         
         </p>
 
@@ -794,7 +1511,7 @@ since 2000-01-01 00:00:00 UTC, not adjusting for daylight savings time or leap s
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l129"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:129</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l131"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:131</code></a>
         
         </p>
 
@@ -887,7 +1604,7 @@ on the values of the header fields, the user is responsible for correct values.<
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l293"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:293</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l414"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:414</code></a>
         
         </p>
 
@@ -898,7 +1615,8 @@ on the values of the header fields, the user is responsible for correct values.<
     </div>
 
     <div class="description">
-        <p>Will convert all message objects in the queue to a valid JOA message. <br/></p>
+        <p>Will construct a syntactically valid JOA payload. If hash is set to true in the header attributes
+it will generate a hash too. <br/></p>
 
     </div>
 
@@ -971,7 +1689,7 @@ on the values of the header fields, the user is responsible for correct values.<
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l176"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:176</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l187"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:187</code></a>
         
         </p>
 
@@ -1044,7 +1762,7 @@ on the values of the header fields, the user is responsible for correct values.<
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l281"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:281</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l402"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:402</code></a>
         
         </p>
 
@@ -1077,6 +1795,61 @@ This process is as suggested by the JOA specification.<br/></p>
                 
             </div>
         </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_JOA.hashJOAPayload" class="method item">
+    <h3 class="name"><code>JOA.hashJOAPayload</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l442"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:442</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Hashes the entire JOA payload with the secret set in the header. <br/></p>
+
+    </div>
+
+    
+
     
 
     
@@ -1125,7 +1898,7 @@ This process is as suggested by the JOA specification.<br/></p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l111"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:111</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l113"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:113</code></a>
         
         </p>
 
@@ -1189,6 +1962,114 @@ This process is as suggested by the JOA specification.<br/></p>
 </div>
 
                 
+                    <div id="method_JOA.md5" class="method item">
+    <h3 class="name"><code>JOA.md5</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[s]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l511"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:511</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>A minized natively approach for Javascript md5 hashing.<br /></p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[s]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>any string to be hashed.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">String</span>:
+                    
+                    <p>A md5 hashed string.</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
                     <div id="method_JOA.post" class="method item">
     <h3 class="name"><code>JOA.post</code></h3>
 
@@ -1231,7 +2112,7 @@ This process is as suggested by the JOA specification.<br/></p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l308"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:308</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l457"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:457</code></a>
         
         </p>
 
@@ -1244,7 +2125,8 @@ This process is as suggested by the JOA specification.<br/></p>
     <div class="description">
         <p>Posts a constructed JOA payload to the backoffice of Munisense. 
 Will clear the message queue and return the results as reported by the backoffice upon a
-succcessful post. <br/></p>
+succcessful post. 
+Note: CORS headers should be enabled on the requested resource.<br/></p>
 
     </div>
 
@@ -1290,7 +2172,7 @@ succcessful post. <br/></p>
 
     
         <span class="returns-inline">
-            <span class="type">Object</span>
+            <span class="type">Boolean</span>
         </span>
     
 
@@ -1317,7 +2199,7 @@ succcessful post. <br/></p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l265"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:265</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l386"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:386</code></a>
         
         </p>
 
@@ -1341,9 +2223,9 @@ succcessful post. <br/></p>
             <div class="returns-description">
                 
                     
-                        <span class="type">Object</span>:
+                        <span class="type">Boolean</span>:
                     
-                    <p>the removed object or {} when nothing was removed.</p>
+                    <p>true if a message was removed, false otherwise.</p>
 
                 
             </div>
@@ -1396,7 +2278,7 @@ succcessful post. <br/></p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l102"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:102</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l104"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:104</code></a>
         
         </p>
 
@@ -1480,7 +2362,7 @@ succcessful post. <br/></p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l329"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:329</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l491"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:491</code></a>
         
         </p>
 
@@ -1551,7 +2433,7 @@ toString() function will output the error message instead of the payload.<br /><
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l18"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:18</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l19"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:19</code></a>
         
         </p>
 
@@ -1596,7 +2478,7 @@ toString() function will output the error message instead of the payload.<br /><
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l28"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:28</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l29"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:29</code></a>
         
         </p>
 
@@ -1615,12 +2497,13 @@ protocolVersion: The HTTP POST content starts with a header indicating protocol 
 This contains the protocol-and-version string to be used in the header. Default is MuniRPCv2:.
 Note: this is a private property and cannot be changed<br/><br/>
 attribute: A header can also contain an optional comma separated list of value-attribute pairs.<br/>
-attribute.vendor: The &#39;vendor&#39; attribute is a string containing the assigned vendor name. A vendor field is required.<br/>
-attribute.hash: The &#39;hash&#39; attribute is the MD5 hash of the shared secret concatenated with the contents of the full
-HTTP POST, including the header without a hash attribute. This value is required when using security level 3 or 4.<br/>
-attribute.secret: The &#39;secret&#39; attributes is the clear-text shared secret. This value is required for security level 2.<br/>
-attribute.time: The &#39;time&#39; attribute indicates a time request. This attribute does not need a attribute-value separator or a value.
-The reply messages will include a time reply.</p>
+attribute.vendor (string): The &#39;vendor&#39; attribute is a string containing the assigned vendor name. A vendor field is required.<br/>
+attribute.hash (boolean): The &#39;hash&#39; attribute is the MD5 hash of the shared secret concatenated with the contents of the full
+HTTP POST, including the header without a hash attribute. This value is required when using security level 3 or 4.
+For this attribute a boolean should be given; true to hash the payload and false for not.<br/>
+attribute.secret (string): The &#39;secret&#39; attributes is the clear-text shared secret. This value is required for security level 2.<br/>
+attribute.time (string): The &#39;time&#39; attribute indicates a time request. This attribute does not need a attribute-value separator or a value.
+The reply messages will include a time reply. This time attribute works .</p>
 
     </div>
 
@@ -1655,7 +2538,7 @@ The reply messages will include a time reply.</p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l57"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:57</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l59"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:59</code></a>
         
         </p>
 
@@ -1700,7 +2583,7 @@ The reply messages will include a time reply.</p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l77"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:77</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l79"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:79</code></a>
         
         </p>
 
@@ -1745,7 +2628,7 @@ The reply messages will include a time reply.</p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l64"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:64</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l66"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:66</code></a>
         
         </p>
 
@@ -1790,7 +2673,7 @@ The reply messages will include a time reply.</p>
             
         
         
-        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l11"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:11</code></a>
+        <a href="../files/D:_Documenten_Workspace_iwls_joa-js-client_src_Joa.js.html#l12"><code>D:\Documenten\Workspace\iwls\joa-js-client\src\Joa.js:12</code></a>
         
         </p>
 
