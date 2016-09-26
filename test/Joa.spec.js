@@ -202,8 +202,8 @@ describe("JOA's removeMessage() function", function() {
     });
 });
 
-describe("The toString function", function() {    
-    it("should show a representation of a JOA payload and not contain any errors.", function() {
+describe("The toString and toHash function", function() {    
+    it("should show a representation of a JOA payload and not contain any errors also the hashing should correct.", function() {
         JOA.clearMessages();
         JOA.addZCLReport("f104:00ff:0000:0001", null, null, "0x0402", "0x0000", "0x20", 1474552384381, "1");
         JOA.headers({
@@ -216,8 +216,11 @@ describe("The toString function", function() {
             gatewayIdentifier: "10.32.16.1"
         });
         expect(JOA.toString()).toEqual("MuniRPCv2:10.32.16.1,vendor=androidnode,time,hash=2419746b3a7ed995a1caadb93c4973c3\n4	0	f104:00ff:0000:0001	0x0a	0xf100	0x0402	0x0000	0x20	1474552384381	1\n");
+        expect(JOA.toHash()).toEqual("2419746b3a7ed995a1caadb93c4973c3");
     });
 });
+
+//write additional test for toHash so we know it is a trusted method with known outputs
 
 describe("Md5 hashing functionality", function() {    
     it("should hash like any other md5 hashing function", function() {

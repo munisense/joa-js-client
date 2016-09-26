@@ -7,16 +7,25 @@
 </body>
 <script src="../dist/JOA-0.0.1.js".js></script>
     <script>
-        JOA("https://joa3.munisense.net/debug/");
+        //hereafter follows a example implementation of a JOA object
+        //first we initialise the object with the url of the backoffice
+        JOA("https://joa3.munisense.net/debug/index.php");
+        //then let the JOA object know we are submitting our data to the debugging end of
+        //the backoffice instead of the production end of the backoffice, this is not a
+        //flag to be used for debugging the JOA object. Default is false
+        JOA.debug = true;
         
-        //EXAMPLE; set/get individual headers:
+        //now we set the headers for this JOA object, they will be used when parsing a valid
+        //JOA3 header definition, we can define our JOA headers in two ways:
+        
+        //EXAMPLE 1; set/get individual headers:
         //JOA.header.gatewayIdentifier = "10.32.16.1";
         //JOA.header.attribute.time = true;
         //JOA.header.attribute.hash = true;
         //JOA.header.attribute.secret = "waiga6ieGo4eefo2thaQuash4ahc4aid";
         //JOA.header.attribute.vendor = "androidnode";
         
-        //EXAMPLE; set JOA headers in one go:
+        //EXAMPLE 2; set JOA headers in one go using an object:
         JOA.headers({
             attribute: {
                 vendor: "androidnode",
@@ -27,17 +36,30 @@
             gatewayIdentifier: "10.32.16.1"
         });
         
-        //JOA.addZCLReport("f104:00ff:0000:0001", null, null, "0x0402", "0x0000", "0x20", 1474552384381, "1");
-        //JOA.addZCLReport("f104:00ff:0000:0002", null, null, "0x0402", "0x0000", "0x20", 1474552384382, "50");
-        JOA.addZCLReport("", "", "", "", "", "", "", "");
+        //next we add our desired reports:
         
-        //document.body.innerHTML = JOA.toString();
+        JOA.addZCLReport("f104:00ff:0000:0001", null, null, "0x0402", "0x0000", "0x20", 1474552384381, "1");
+        JOA.addZCLReport("f104:00ff:0000:0002", null, null, "0x0402", "0x0000", "0x20", 1474552384382, "50");
+        JOA.addZCLReport("f104:00ff:0000:0003", null, null, "0x0402", "0x0000", "", "", "10");
+        
+        //before we post any results we could see the complete payload with the toString() method
+        //or we could get the hash of the payload by using the toHash() method
+        
         //console.log(JOA.toString());
-        JOA.post(function(err, result) {
+        //console.log(JOA.toHash());
+        
+        //finally we post the payload to the backoffice
+        //the reponse comes though a callback, if err is not set we're good
+        //the result will have the result set returned from the server in
+        //the same format as described in the JOA3 specifications document.
+        
+        JOA.post(function(err, result, payload) {
             if(err)
                 console.log(err);
-            if(result)
+            if(result) {
                 console.log(result);
+                console.log(payload);
+            }
         });
     </script>
 </body>

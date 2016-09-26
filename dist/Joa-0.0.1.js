@@ -10,6 +10,15 @@
 var JOA = (function () {
     "use strict";
     /**
+     * A flag to indicate this JOA object is running in debug mode. Standard value is false. 
+     * Whenever debugging is set to true the post() method will posts it's data like the JOA
+     * debugging form found at: http://joa3.munisense.net/debug/index.php. <br/>
+     *
+     * @property JOA.debug
+     * @type {Boolean}
+     */
+    var debug = true;
+    /**
      * Represents the current set backoffice url. <br/>
      *
      * @property JOA.url
@@ -24,7 +33,7 @@ var JOA = (function () {
      */
     var char = {
         tab: "\u0009",
-        eol: "\u000A" //might also be \u000D or a combination of both, tests should be conclusive
+        eol: "\u000A"
     };
     /**
      * The header object used to construct a valid header for a particular request. <br/><br/>
@@ -208,8 +217,8 @@ var JOA = (function () {
             //add it to the temp array
             tmp.push(convertedMessage);
         }
-        //return the results
-        return tmp;
+        //return the results as a string instead of an array and remove all the comma occurences
+        return tmp.toString().replace(new RegExp(",", "g"), "");
     }
     /**
      * Adds a ZCL report to the message queue. <br/>
@@ -427,9 +436,7 @@ var JOA = (function () {
                 if(!JOA.header.attribute.hash) {
                     cb(null, result + constructMessages());
                 //else if the hash is enabled AND the secret is also set we will hash the payload
-                } else if(JOA.header.attribute.hash &&
-                          JOA.header.attribute.secret &&
-                          JOA.header.attribute.secret.length > 0) {
+                } else if(isHashingEnabled()) {
                     cb(null, hashJOAPayload(result + constructMessages()));
                 //in any other cases (which is only when the hash is enabled and no secret is set)
                 //we will return an error
@@ -449,15 +456,13 @@ var JOA = (function () {
         //we will insert the generated hash header
         var indexOfHashHeader = payload.indexOf(char.eol);
         //return the new payload with the appended hash header
-        console.log(JSON.stringify(JOA.header.attribute.secret + payload));
-        console.log(JOA.header.attribute.secret + payload);
-        console.log(JOA.md5("waiga6ieGo4eefo2thaQuash4ahc4aidMuniRPCv2:10.32.16.1,vendor=androidnode,time\n1\t0\t\t0x0a\t0xf100\n"));
-        return payload.slice(0, indexOfHashHeader) + ",hash=" + JOA.md5(JOA.header.attribute.secret + payload) + payload.slice(indexOfHashHeader);
+        var payloadWithHash = payload.slice(0, indexOfHashHeader) + ",hash=" + JOA.md5(JOA.header.attribute.secret + payload) + payload.slice(indexOfHashHeader);
+        return payloadWithHash;
     }
     /**
      * Posts a constructed JOA payload to the backoffice of Munisense. 
-     * Will clear the message queue and return the results as reported by the backoffice upon a
-     * succcessful post. 
+     * Will clear the message queue, so that the object is reusable, and return the results as
+     * reported by the backoffice upon a succcessful post.
      * Note: CORS headers should be enabled on the requested resource.<br/>
      *
      * @method JOA.post
@@ -466,27 +471,49 @@ var JOA = (function () {
     function post(cb) {
         constructJOAPayload(function(err, result) {
             if(err) {
-                cb(err, null);
+                cb(err, null, null);
             } else {
-                //make ajax call
+                //make the ajax call
                 var http = new XMLHttpRequest();
-                var params = result;
                 http.open("POST", JOA.url, true);
+                var params = "";
+                //is debugging enabled, if so change the params and request headers accordingly
+                if(JOA.debug) {
+                    http.responseType = "document";
+                    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    params = "joa3[ip]=0.0.0.0&joa3[url]=https://joa3.munisense.net/&joa3[body]=" + result;
+                } else {
+                    http.setRequestHeader("Content-type", "text/plain;charset=UTF-8");
+                    params = result;
+                }
                 //call a function when the state changes
                 http.onreadystatechange = function() {
                     if(http.readyState == XMLHttpRequest.DONE) {
                         if(http.status == 200) {
                             //if all went well clear the messages and make a callback
                             clearMessages();
-                            cb(null, http.responseText);
+                            //decide what to return based on the debug flag
+                            var ret = JOA.debug ? http.response.getElementsByTagName("pre")[0].innerHTML : http.responseText;
+                            cb(null, ret, result);
                         } else {
-                            cb(http.statusText, null);
+                            cb(http.statusText, null, null);
                         }
                     }
                 };
                 http.send(params);
             }
         });
+    }
+    /**
+     * Checks wheter or not hashing is enabled in the header attributes.<br />
+     *
+     * @method JOA.isHashingEnabled
+     * @return {Boolean} returns true if hashing is enabled, false otherwise.
+    **/
+    function isHashingEnabled() {
+        return JOA.header.attribute.hash &&
+            JOA.header.attribute.secret &&
+            JOA.header.attribute.secret.length > 0;
     }
     /**
      * A representation of the object in the format of a composed JOA payload (see also 'Example'
@@ -509,6 +536,29 @@ var JOA = (function () {
         return ret;
     }
     /**
+     * Returns the hash of the current JOA object and it's messages that is appended to the
+     * header definition.<br />
+     *
+     * @method JOA.toHash
+     * @return {String} The hash that is appended to the header definition.
+    **/
+    function toHash() {
+        var ret = null;
+        constructJOAPayload(function(err, result) {
+            if(err) {
+                ret = err;
+            } else if(isHashingEnabled()) {
+                //six is the length of ,hash=
+                var indexOfHash = result.indexOf(",hash=") + 6;
+                var indexOfLastEOL = result.indexOf(char.eol);
+                ret = result.substring(indexOfHash, indexOfLastEOL);
+            } else {
+                ret = "no_hashing_enbaled";
+            }
+        });
+        return ret;
+    }
+    /**
      * A minized natively approach for Javascript md5 hashing.<br />
      *
      * @method JOA.md5
@@ -518,6 +568,7 @@ var JOA = (function () {
     var md5 = function(s){function L(k,d){return(k<<d)|(k>>>(32-d));}function K(G,k){var I,d,F,H,x;F=(G&2147483648);H=(k&2147483648);I=(G&1073741824);d=(k&1073741824);x=(G&1073741823)+(k&1073741823);if(I&d){return(x^2147483648^F^H);}if(I|d){if(x&1073741824){return(x^3221225472^F^H);}else{return(x^1073741824^F^H);}}else{return(x^F^H);}}function r(d,F,k){return(d&F)|((~d)&k);}function q(d,F,k){return(d&k)|(F&(~k));}function p(d,F,k){return(d^F^k);}function n(d,F,k){return(F^(d|(~k)));}function u(G,F,aa,Z,k,H,I){G=K(G,K(K(r(F,aa,Z),k),I));return K(L(G,H),F);}function f(G,F,aa,Z,k,H,I){G=K(G,K(K(q(F,aa,Z),k),I));return K(L(G,H),F);}function D(G,F,aa,Z,k,H,I){G=K(G,K(K(p(F,aa,Z),k),I));return K(L(G,H),F);}function t(G,F,aa,Z,k,H,I){G=K(G,K(K(n(F,aa,Z),k),I));return K(L(G,H),F);}function e(G){var Z;var F=G.length;var x=F+8;var k=(x-(x%64))/64;var I=(k+1)*16;var aa=Array(I-1);var d=0;var H=0;while(H<F){Z=(H-(H%4))/4;d=(H%4)*8;aa[Z]=(aa[Z]| (G.charCodeAt(H)<<d));H++;}Z=(H-(H%4))/4;d=(H%4)*8;aa[Z]=aa[Z]|(128<<d);aa[I-2]=F<<3;aa[I-1]=F>>>29;return aa;}function B(x){var k="",F="",G,d;for(d=0;d<=3;d++){G=(x>>>(d*8))&255;F="0"+G.toString(16);k=k+F.substr(F.length-2,2);}return k;}function J(k){k=k.replace(/rn/g,"n");var d="";for(var F=0;F<k.length;F++){var x=k.charCodeAt(F);if(x<128){d+=String.fromCharCode(x);}else{if((x>127)&&(x<2048)){d+=String.fromCharCode((x>>6)|192);d+=String.fromCharCode((x&63)|128);}else{d+=String.fromCharCode((x>>12)|224);d+=String.fromCharCode(((x>>6)&63)|128);d+=String.fromCharCode((x&63)|128);}}}return d;}var C=Array();var P,h,E,v,g,Y,X,W,V;var S=7,Q=12,N=17,M=22;var A=5,z=9,y=14,w=20;var o=4,m=11,l=16,j=23;var U=6,T=10,R=15,O=21;s=J(s);C=e(s);Y=1732584193;X=4023233417;W=2562383102;V=271733878;for(P=0;P<C.length;P+=16){h=Y;E=X;v=W;g=V;Y=u(Y,X,W,V,C[P+0],S,3614090360);V=u(V,Y,X,W,C[P+1],Q,3905402710);W=u(W,V,Y,X,C[P+2],N,606105819);X=u(X,W,V,Y,C[P+3],M,3250441966);Y=u(Y,X,W,V,C[P+4],S,4118548399);V=u(V,Y,X,W,C[P+5],Q,1200080426);W=u(W,V,Y,X,C[P+6],N,2821735955);X=u(X,W,V,Y,C[P+7],M,4249261313);Y=u(Y,X,W,V,C[P+8],S,1770035416);V=u(V,Y,X,W,C[P+9],Q,2336552879);W=u(W,V,Y,X,C[P+10],N,4294925233);X=u(X,W,V,Y,C[P+11],M,2304563134);Y=u(Y,X,W,V,C[P+12],S,1804603682);V=u(V,Y,X,W,C[P+13],Q,4254626195);W=u(W,V,Y,X,C[P+14],N,2792965006);X=u(X,W,V,Y,C[P+15],M,1236535329);Y=f(Y,X,W,V,C[P+1],A,4129170786);V=f(V,Y,X,W,C[P+6],z,3225465664);W=f(W,V,Y,X,C[P+11],y,643717713);X=f(X,W,V,Y,C[P+0],w,3921069994);Y=f(Y,X,W,V,C[P+5],A,3593408605);V=f(V,Y,X,W,C[P+10],z,38016083);W=f(W,V,Y,X,C[P+15],y,3634488961);X=f(X,W,V,Y,C[P+4],w,3889429448);Y=f(Y,X,W,V,C[P+9],A,568446438);V=f(V,Y,X,W,C[P+14],z,3275163606);W=f(W,V,Y,X,C[P+3],y,4107603335);X=f(X,W,V,Y,C[P+8],w,1163531501);Y=f(Y,X,W,V,C[P+13],A,2850285829);V=f(V,Y,X,W,C[P+2],z,4243563512);W=f(W,V,Y,X,C[P+7],y,1735328473);X=f(X,W,V,Y,C[P+12],w,2368359562);Y=D(Y,X,W,V,C[P+5],o,4294588738);V=D(V,Y,X,W,C[P+8],m,2272392833);W=D(W,V,Y,X,C[P+11],l,1839030562);X=D(X,W,V,Y,C[P+14],j,4259657740);Y=D(Y,X,W,V,C[P+1],o,2763975236);V=D(V,Y,X,W,C[P+4],m,1272893353);W=D(W,V,Y,X,C[P+7],l,4139469664);X=D(X,W,V,Y,C[P+10],j,3200236656);Y=D(Y,X,W,V,C[P+13],o,681279174);V=D(V,Y,X,W,C[P+0],m,3936430074);W=D(W,V,Y,X,C[P+3],l,3572445317);X=D(X,W,V,Y,C[P+6],j,76029189);Y=D(Y,X,W,V,C[P+9],o,3654602809);V=D(V,Y,X,W,C[P+12],m,3873151461);W=D(W,V,Y,X,C[P+15],l,530742520);X=D(X,W,V,Y,C[P+2],j,3299628645);Y=t(Y,X,W,V,C[P+0],U,4096336452);V=t(V,Y,X,W,C[P+7],T,1126891415);W=t(W,V,Y,X,C[P+14],R,2878612391);X=t(X,W,V,Y,C[P+5],O,4237533241);Y=t(Y,X,W,V,C[P+12],U,1700485571);V=t(V,Y,X,W,C[P+3],T,2399980690);W=t(W,V,Y,X,C[P+10],R,4293915773);X=t(X,W,V,Y,C[P+1],O,2240044497);Y=t(Y,X,W,V,C[P+8],U,1873313359);V=t(V,Y,X,W,C[P+15],T,4264355552);W=t(W,V,Y,X,C[P+6],R,2734768916);X=t(X,W,V,Y,C[P+13],O,1309151649);Y=t(Y,X,W,V,C[P+4],U,4149444226);V=t(V,Y,X,W,C[P+11],T,3174756917);W=t(W,V,Y,X,C[P+2],R,718787259);X=t(X,W,V,Y,C[P+9],O,3951481745);Y=K(Y,h);X=K(X,E);W=K(W,v);V=K(V,g);}var i=B(Y)+B(X)+B(W)+B(V);return i.toLowerCase();};
     
     //JOA properties
+    JOA.debug = debug;
     JOA.url = url;
     JOA.header = header;
     //JOA constructor
@@ -530,10 +581,8 @@ var JOA = (function () {
     JOA.removeMessage = removeMessage;
     JOA.post = post;
     JOA.toString = toString;
+    JOA.toHash = toHash;
     JOA.md5 = md5;
-    
-    //debug to be removed
-    JOA.debug = "";
     
     return JOA;
 }());
