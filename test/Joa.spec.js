@@ -220,7 +220,59 @@ describe("The toString and toHash function", function() {
     });
 });
 
-//write additional test for toHash so we know it is a trusted method with known outputs
+describe("The toHash function", function() {    
+    it("should show a correct hash for even the most strangest payloads.", function() {
+        JOA.clearMessages();
+        JOA.headers({
+            attribute: {
+                vendor: "androidnode",
+                time: true,
+                hash: true,
+                secret: "waiga6ieGo4eefo2thaQuash4ahc4aid"
+            },
+            gatewayIdentifier: "10.90.80.2"
+        });
+        JOA.addZCLReport("f104:00ff:0000:0001", null, null, "0x0402", "0x0000", "0x20", 1474552384381, "1");
+        expect(JOA.toHash()).toEqual("7ba932af95a27356be566fc3b9cceece");
+        
+        JOA.addZCLReport("", null, null, "", "", "", 0, "12");
+        expect(JOA.toHash()).toEqual("cc16d42460966abb333a90f4477c7437");
+        
+        JOA.addZCLReport("i", "do", "tests", "every", "day", "yeah", "", "a");
+        expect(JOA.toHash()).toEqual("5b3c0aa767070f8846e04b0bff66c244");
+        
+        JOA.addZCLReport("f104:00ff:0000:000f", null, null, "", "", "", "", "");
+        expect(JOA.toHash()).toEqual("fb3893d36d7664bda61e7fa441ca8465");
+    });
+});
+
+describe("Adding a ZCL Multireport", function() {    
+    it("should be added to the message queue and be able to be parsed correctly.", function() {
+        JOA.clearMessages();
+        JOA.headers({
+            attribute: {
+                vendor: "androidnode",
+                time: true,
+                hash: true,
+                secret: "waiga6ieGo4eefo2thaQuash4ahc4aid"
+            },
+            gatewayIdentifier: "10.32.16.1"
+        });
+        JOA.addZCLMultiReport("f104:00ff:0000:0001", null, null, "0x0402", "0x0000", "0x20", 1474552384381, 500, ["1", "2"]);
+        expect(JOA.toString()).toEqual("MuniRPCv2:10.32.16.1,vendor=androidnode,time,hash=c614b877ef42a5d3102e7c2c0b55f240\n9	1	f104:00ff:0000:0001	0x0a	0xf100	0x0402	0x0000	0x20	1474552384381	500	1	2\n");
+        expect(JOA.toHash()).toEqual("c614b877ef42a5d3102e7c2c0b55f240");
+    });
+});
+
+describe("Adding a ZCL command", function() {    
+    it("should be added to the message queue and be able to be parsed correctly.", function() {
+        JOA.clearMessages();
+        
+        JOA.addZCLCommand("f104:00ff:0000:0001", null, null, "0x0402", "1", "0x12", 1474552384381, "dGVzdA==");
+        expect(JOA.toString()).toEqual("MuniRPCv2:10.32.16.1,vendor=androidnode,time,hash=6cfa3cb05e045c477d33cb6511ae6621\n10	2	f104:00ff:0000:0001	0x0a	0xf100	0x0402	1	0x12	1474552384381	dGVzdA==\n");
+        expect(JOA.toHash()).toEqual("6cfa3cb05e045c477d33cb6511ae6621");
+    });
+});
 
 describe("Md5 hashing functionality", function() {    
     it("should hash like any other md5 hashing function", function() {

@@ -7,12 +7,16 @@
 </body>
 <script src="../dist/JOA-0.0.1.js".js></script>
     <script>
-        //hereafter follows a example implementation of a JOA object
+        //hereafter follows aan example implementation of a JOA object
+        //i also try to be as explanatory as possible, however no new information
+        //will be given in this example as all explanations found here is from the
+        //documentation
+        
         //first we initialise the object with the url of the backoffice
-        JOA("https://joa3.munisense.net/debug/index.php");
+        JOA("https://joa3.munisense.net/debug/");
         //then let the JOA object know we are submitting our data to the debugging end of
         //the backoffice instead of the production end of the backoffice, this is not a
-        //flag to be used for debugging the JOA object. Default is false
+        //flag to be used for debugging the JOA object. Default is false.
         JOA.debug = true;
         
         //now we set the headers for this JOA object, they will be used when parsing a valid
@@ -37,28 +41,44 @@
         });
         
         //next we add our desired reports:
-        
+        //this report is not valid for the backoffice
+        JOA.addZCLReport("", "", "", "", "", "", "", "80" );
+        //the following are valid:
         JOA.addZCLReport("f104:00ff:0000:0001", null, null, "0x0402", "0x0000", "0x20", 1474552384381, "1");
-        JOA.addZCLReport("f104:00ff:0000:0002", null, null, "0x0402", "0x0000", "0x20", 1474552384382, "50");
-        JOA.addZCLReport("f104:00ff:0000:0003", null, null, "0x0402", "0x0000", "", "", "10");
+        JOA.addZCLReport("", null, null, "", "", "", 0, "12");
+        JOA.addZCLReport("i", "do", "tests", "every", "day", "yeah", "", "a");
+        //to save some bits in transport we could also create a report with empty values,
+        //the backoffice will reconstruct a complete message based on the previous one
+        //(in this case based on the message f104:00ff:0000:0002)
+        //NOTE: addZCLReport() will only parse syntactically valid JOA3 messages and cant check
+        //if it is contextually valid, meaning that when this message is the first or only one to
+        //be send, the backoffice wont be able to reconstruct this message and will reply back
+        //with a 485 error code
+        JOA.addZCLReport("f104:00ff:0000:000f", "", "", "", "", "", "", "");
+        //maybe add some different types of reports.
+        //a multireport is just a bunch of single ZCL reports combined.
+        JOA.addZCLMultiReport("f104:00ff:0000:0001", null, null, "0x0402", "0x0000", "0x20", 1474552384381, 500, ["1", "2"]);
+        JOA.addZCLCommand("f104:00ff:0000:0001", null, null, "0x0402", "1", "0x12", 1474552384381, "dGVzdA==");
         
         //before we post any results we could see the complete payload with the toString() method
         //or we could get the hash of the payload by using the toHash() method
-        
-        //console.log(JOA.toString());
+        console.log(JOA.toString());
         //console.log(JOA.toHash());
         
         //finally we post the payload to the backoffice
-        //the reponse comes though a callback, if err is not set we're good
+        //the reponse comes through a callback, if err is not set we're good
         //the result will have the result set returned from the server in
         //the same format as described in the JOA3 specifications document.
-        
-        JOA.post(function(err, result, payload) {
+        //A final messages parameter is given to check your results with your
+        //sent messages, be aware; after this call (iff it was a successful
+        //post) the message queue is cleaned and the JOA object can be used
+        //again immediately
+        JOA.post(function(err, result, messages) {
             if(err)
                 console.log(err);
             if(result) {
                 console.log(result);
-                console.log(payload);
+                //console.log(messages);
             }
         });
     </script>
