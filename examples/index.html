@@ -62,6 +62,7 @@
         
         //before we post any results we could see the complete payload with the toString() method
         //or we could get the hash of the payload by using the toHash() method
+        console.log("%c The payload: ", "background: #222; color: #bada55; font-size: 18px");
         console.log(JOA.toString());
         //console.log(JOA.toHash());
         
@@ -73,12 +74,17 @@
         //sent messages, be aware; after this call (iff it was a successful
         //post) the message queue is cleaned and the JOA object can be used
         //again immediately
-        JOA.post(function(err, result, messages) {
-            if(err)
+        console.log("%c Tip: enable 'Log XMLHttpRequests' by right clicking here and press F5", "background: #0a0; color: #fff; font-size: 12px");
+        JOA.post(function(err, response, messages) {
+            if(err) {
+                console.log("%c Oops an error occured: ", "background: #f00; color: #fff; font-size: 18px");
                 console.log(err);
-            if(result) {
-                console.log(result);
-                //console.log(messages);
+            }
+            if(response) {
+                console.log("%c What the backoffice returned: ", "background: #222; color: #bada55; font-size: 18px");
+                console.log(response);
+                console.log("%c The messages that were sent: ", "background: #222; color: #bada55; font-size: 18px");
+                console.log(messages);
             }
         });
     </script>

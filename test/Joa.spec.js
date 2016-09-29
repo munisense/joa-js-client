@@ -217,6 +217,9 @@ describe("The toString and toHash function", function() {
         });
         expect(JOA.toString()).toEqual("MuniRPCv2:10.32.16.1,vendor=androidnode,time,hash=2419746b3a7ed995a1caadb93c4973c3\n4	0	f104:00ff:0000:0001	0x0a	0xf100	0x0402	0x0000	0x20	1474552384381	1\n");
         expect(JOA.toHash()).toEqual("2419746b3a7ed995a1caadb93c4973c3");
+        //check toHash() error reporting
+        JOA.header.attribute.hash = false;
+        expect(JOA.toHash()).toEqual("no_hashing_enbaled");
     });
 });
 
@@ -246,8 +249,9 @@ describe("The toHash function", function() {
     });
 });
 
-describe("Adding a ZCL Multireport", function() {    
-    it("should be added to the message queue and be able to be parsed correctly.", function() {
+describe("Adding a two ZCL Multireport", function() {    
+    it("should be added to the message queue and be able to be parsed correctly. " +
+       "And the second should fail whenever no array is given for the value", function() {
         JOA.clearMessages();
         JOA.headers({
             attribute: {
