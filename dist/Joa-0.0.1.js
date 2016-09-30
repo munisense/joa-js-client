@@ -34,6 +34,7 @@ var JOA = (function () {
      *
      * @property JOA.char
      * @type {Object}
+     * @private
      */
     var char = {
         tab: "\u0009",
@@ -81,6 +82,7 @@ var JOA = (function () {
      *
      * @property JOA.messageId
      * @type {Integer}
+     * @private
      */
     var messageId = 0;
     /**
@@ -88,6 +90,7 @@ var JOA = (function () {
      *
      * @property JOA.messageType
      * @type {Object}
+     * @private
      */
     var messageType = {
         ZCLReport: 0,
@@ -101,15 +104,17 @@ var JOA = (function () {
      *
      * @property JOA.messages
      * @type {Array}
+     * @private
      */
     var messages = [];
     /**
      * JOA is an object used to communicate with the backoffice of Munisense. 
      * This object will be able to construct a (syntactically) valid payload according to the ms-tech-141003-3 specification.
-     * Knowledge of the ms-tech-141003-3 document is required. <br /><br />
-     * Currently this implementation only supports the MuniRPC version 2 protocol (JOA3).<br/>
-     * There is no need to 'new' this object as that is being done for you. Usage is through the JOA() object.
-     * All requests made to the backoffice are made asynchronously.
+     * Knowledge of the ms-tech-141003-3 document and the ZigBee cluster specification is required. <br /><br />
+     * There is no need to 'new' this object as that is being done for you. Usage is through the JOA() object. For
+     * an example implementation see 'examples'. All requests made to the backoffice are made asynchronously.<br /><br />
+     * Currently this implementation only supports the MuniRPC version 2 protocol (JOA3).<br/><br />
+     * ZigBee cluster specification: https://people.ece.cornell.edu/land/courses/ece4760/FinalProjects/s2011/kjb79_ajm232/pmeter/ZigBee%20Cluster%20Library.pdf
      *
      * @class JOA
      * @constructor
@@ -124,15 +129,6 @@ var JOA = (function () {
         JOA.url = url || "https://joa3.munisense.net/";
         return this;
     };
-    /**
-     * Sets the url for the backoffice. <br />
-     *
-     * @method JOA.setUrl
-     * @param {String} url The url where the backoffice is located.
-    **/
-    function setUrl(url) {
-        JOA.url = url;
-    }
     /**
      * Intialises the header fields in one go with an options object.<br/>
      *
@@ -160,6 +156,7 @@ var JOA = (function () {
      *
      * @param {Function} cb A callback function with an error and a result parameter.
      * @method JOA.parseHeader
+     * @private
      * @example
      parseHeader(function (err, header) {
             if (err) {
@@ -197,7 +194,7 @@ var JOA = (function () {
                         headerStr += ",time";
                     //any other field except for the pre-shared secret and the hash gets added to the
                     //header definition, note: the hash (if enabled) will be added later on
-                    //in parseJOAPayload() function.
+                    //in parsePayload() function.
                     } else if (attributeKey !== "secret" && attributeKey !== "hash") {
                         headerStr += "," + attributeKey + "=" + attributeValue;
                     }
@@ -223,6 +220,7 @@ var JOA = (function () {
      *
      * @method JOA.parseMessages
      * @return {Array} An array consisting of all converted JOA messages.
+     * @private
      */
     function parseMessages() {
         //setup an temp array which will hold all the new converted messages
@@ -254,6 +252,7 @@ var JOA = (function () {
      *
      * @method JOA.generateId
      * @return {Integer} An incremented integer to be used as an id.
+     * @private
      */
     function generateId() {
         messageId += 1;
@@ -342,7 +341,7 @@ var JOA = (function () {
      * values. For each value the offset is added to the timestamp. The offset is in milliseconds. If the offset is a
      * positive value, each value following the first will have a timestamp in the future in respect it previous value.
      * When the offset is negative, each value following the first will have a timestamp in the past in respect it previous value.
-     * @param {String} values An array containing the values in an ASCII representation of the reported values.
+     * @param {Array} values An array containing the values in an ASCII representation of the reported values.
      * The datatypeId indicates how a value should be notated:<br />
      * - Integer (0x20-0x27, 0x28-0x2f): The value is numeric and optionally negative using a '-' minues
      * indication in front of the value for signed values.<br />
@@ -449,6 +448,7 @@ var JOA = (function () {
      * @method JOA.isHashingEnabled
      * @return {Boolean} True if hashing is enabled, the secret set and it's length greater than 0
      * , false otherwise.
+     * @private
     **/
     function isHashingEnabled() {
         return JOA.header.attribute.hash &&
@@ -458,9 +458,10 @@ var JOA = (function () {
     /**
      * Hashes the entire JOA payload with the secret that has been set in the header. <br/>
      *
-     * @method JOA.hashJOAPayload
+     * @method JOA.hashPayload
+     * @private
      */
-    function hashJOAPayload(payload) {
+    function hashPayload(payload) {
         //we get the first occurence of the eol in the header definition and there
         //we will insert the generated hash header
         var indexOfHashHeader = payload.indexOf(char.eol),
@@ -477,9 +478,10 @@ var JOA = (function () {
      * it will generate a hash too and append it to the payload. <br/>
      *
      * @param {Function} cb A callback function with an error and a result parameter.
-     * @method JOA.parseJOAPayload
+     * @method JOA.parsePayload
+     * @private
      @example
-     parseJOAPayload(function (err, payload) {
+     parsePayload(function (err, payload) {
             if (err) {
                 console.log(err);
             } else {
@@ -488,7 +490,7 @@ var JOA = (function () {
             }
         });
      */
-    function parseJOAPayload(cb) {
+    function parsePayload(cb) {
         parseHeader(function (err, header) {
             if (err) {
                 cb(err, null);
@@ -498,7 +500,7 @@ var JOA = (function () {
                     cb(null, header + parseMessages());
                 //else if the hash is enabled AND the secret is also set we will hash the payload
                 } else if (isHashingEnabled()) {
-                    cb(null, hashJOAPayload(header + parseMessages()));
+                    cb(null, hashPayload(header + parseMessages()));
                 //in any other cases (which is only when the hash is enabled and no secret is set)
                 //we will return an error
                 } else {
@@ -508,8 +510,7 @@ var JOA = (function () {
         });
     }
     /**
-     * Posts a constructed JOA payload to the url given as a parameter in the constructor method.
-     * Or to the url given in the setUrl() method.
+     * Posts a constructed JOA payload to the user given url.
      * Will clear the message queue iff the post was successful, so that the object is reusable right after,
      * and return the results as reported by the backoffice.
      *
@@ -534,7 +535,7 @@ var JOA = (function () {
         });
      */
     function post(cb) {
-        parseJOAPayload(function (err, payload) {
+        parsePayload(function (err, payload) {
             if (err) {
                 cb(err, null, null);
             } else {
@@ -581,7 +582,7 @@ var JOA = (function () {
     **/
     function toString() {
         var ret = null;
-        parseJOAPayload(function (err, payload) {
+        parsePayload(function (err, payload) {
             if (err) {
                 ret = err;
             } else {
@@ -598,7 +599,7 @@ var JOA = (function () {
     **/
     function toHash() {
         var ret = null;
-        parseJOAPayload(function (err, payload) {
+        parsePayload(function (err, payload) {
             if (err) {
                 ret = err;
             } else if (isHashingEnabled()) {
@@ -629,7 +630,6 @@ var JOA = (function () {
     JOA.prototype.constructor = JOA;
     //JOA methods
     JOA.headers = headers;
-    JOA.setUrl = setUrl;
     JOA.addZCLReport = addZCLReport;
     JOA.addZCLMultiReport = addZCLMultiReport;
     JOA.addZCLCommand = addZCLCommand;

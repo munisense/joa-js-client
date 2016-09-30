@@ -3,14 +3,16 @@ var JOA = require("../src/JOA.js");
 describe("A JOA's object url property", function() {    
     it("should be null when initiated.", function() {
         expect(JOA.url).toBeNull();
+        JOA("https://www.google.com");
+        expect(JOA.url).not.toBeNull();
     });
 });
 
 describe("JOA's object url functions", function() {    
     it("should set the url property.", function() {
-        expect(JOA.setUrl("https://joa3.munisense.net/debug/")).toEqual();
-    });
-    it("should be able to get the url property.", function() {
+        JOA.url = "https://joa3.munisense.net/";
+        expect(JOA.url).toEqual("https://joa3.munisense.net/");
+        JOA.url = "https://joa3.munisense.net/debug/";
         expect(JOA.url).toEqual("https://joa3.munisense.net/debug/");
     });
 });
@@ -197,6 +199,8 @@ describe("JOA's addZCLReport() function", function() {
 
 describe("JOA's removeMessage() function", function() {    
     it("should remove the message of the given id.", function() {
+        expect(JOA.removeMessage()).toEqual(false);
+        expect(JOA.removeMessage(2000)).toEqual(false);
         var obj3 = JOA.addZCLReport(123, null, null, "c", "d", "e", 1000, "hello");
         expect(JOA.removeMessage(3)).toEqual(true);
     });
