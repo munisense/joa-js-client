@@ -100,6 +100,70 @@ var JOA = (function () {
         TimeIndication: "t"
     };
     /**
+     * An object to be used as an enumerator for message codes. <br/>
+     *
+     * @property JOA.messageStatus
+     * @type {Object}
+     * @private
+     */
+    var messageStatus = {
+        200: {
+            code: 200,
+            text: "OK",
+            description: "Message is received and processed."
+        },
+        480: {
+            code: 480,
+            text: "Empty Message",
+            description: "When there is only an ID and no message type field."
+        },
+        481: {
+            code: 481,
+            text: "Invalid ID",
+            description: "The format of the ID is not valid."
+        },
+        482: {
+            code: 482,
+            text: "Missing ID",
+            description: "The message will not be processed due to invalid authorization."
+        },
+        483: {
+            code: 483,
+            text: "Invalid Message",
+            description: "Type The message type is not valid."
+        },
+        484: {
+            code: 484,
+            text: "Invalid Element",
+            description: "Count The message does not have the expected amount of fields."
+        },
+        485: {
+            code: 485,
+            text: "Incomplete Message",
+            description: "Not all fields have values or could be copied from the previous value."
+        },
+        486: {
+            code: 486,
+            text: "Invalid Offset",
+            description: "The offset value in a MultiReport message is not valid."
+        },
+        487: {
+            nr: 487,
+            text: "Invalid Value",
+            description: "The value of one of the fields in a message is not valid."
+        },
+        488: {
+            code: 488,
+            text: "Not Implemented",
+            description: "The message type or feature was not implemented."
+        },
+        489: {
+            code: 489,
+            text: "Error processing message",
+            description: "The message was correct but could not be processed."
+        }
+    };
+    /**
      * A queue (array) containing all message objects.<br/>
      *
      * @property JOA.messages
@@ -510,15 +574,144 @@ var JOA = (function () {
         });
     }
     /**
+     * Parses the result gotten from the backoffice. It will return an array containing all messages as 
+     * Javascript objects.<br/>
+     *
+     * @param {String} str The response as gotton it from the backoffice.
+     * @method JOA.parseResponse
+     * @return {[Object]} An array containing objects. See example to see the format of the returned array.
+     * @private
+     */
+    function parseResponse(response) {
+        var splitResponse = response.split(char.eol),
+            tmp = [],
+            i,
+            j;
+        //we loop through all the splitResponse elements except for the last one
+        //we splitted on char.eol chars, each line in the respone ends with a eol char
+        //even the last one so to ignore the always empty last element of this array
+        //we reduce length with 1
+        for(i = 0; i < splitResponse.length - 1; i++) {
+            var splitResponseMessage = splitResponse[i].split(char.tab);
+            var referencedMessagesIds = [];
+            //we build an array containing all the referenced message ids in this response message
+            //because the first and second elements are always an type and a status code we will
+            //set j to 2 as initial value, we skip over those elements (the rest are all referenced ids
+            //which we actually need)
+            for(j = 2; j < splitResponseMessage.length; j++) {
+                referencedMessagesIds.push(splitResponseMessage[j]);
+            }
+            //now that we got all the data lets start creating the array to return
+            //check for the case we have a time attribute if so handle accordingly
+            var type = splitResponseMessage[0],
+                obj;
+            if(type !== "t") {
+                obj = {
+                    type: type,
+                    code: messageStatus[splitResponseMessage[1]],
+                    messages: referencedMessagesIds
+                };
+            } else {
+               obj = {
+                    type: type,
+                    timestamp: splitResponseMessage[1]
+                }; 
+            }
+            //push the actual object into the tmp array
+            tmp.push(obj);
+        }
+        return tmp;
+    }
+    /**
+     * Gets the status of a message based on a given response set. This response set should be an array
+     * containing all messages as Javascript objects.<br/>
+     *
+     * @param {Object} message The message (as an object) to check against a response.
+     * @param {[Object]} response The response as gotton it from the backoffice.
+     * @method JOA.getMessageStatus
+     * @return {Object} An object containing the status of the message in the format in the example. Or
+     * status '200' if the message was not found in the response.
+     * @example
+     getMessageStatus(messageObj, respObj);
+     Returns:
+     {
+        nr: 200,
+        text: "OK",
+        description: "Message is received and processed."
+     }
+     * @private
+     */
+    function getMessageStatus(message, response) {
+        var i, j;
+        for(i = 0; i < response.length; i++) {
+            //were only going to loop through status response messages and not timestamp messages
+            if(response[i].type === "s") {
+                var messageIds = response[i].messages;
+                for(j = 0; j < messageIds.length; j++) {
+                    if(message.id == messageIds[j]) {
+                        return response[i].code;
+                    }
+                }
+            }
+        }
+        return messageStatus[200];
+    }
+    /**
+     * Determines all the successful messages in a certain response. All successful messages will also get
+     * their status appended to the object.<br/>
+     *
+     * @param {Object} messages The messages (as an array of objects) to check against a response.
+     * @param {[Object]} response The response as gotton it from the backoffice.
+     * @method JOA.getSuccessfulMessages
+     * @return {[Object]} An array containing all the messages that came back with a 200 (OK) status.
+     * @private
+     */
+    function getSuccessfulMessages(messages, response) {
+        var i,
+            tmp = [];
+        for(i = 0; i < messages.length; i++) {
+            var msgStatus = getMessageStatus(messages[i], response);
+            if(msgStatus.code === 200) {
+                messages[i].status = msgStatus;
+                tmp.push(messages[i]);
+            }
+        }
+        return tmp;
+    }
+    /**
+     * Determines all the failed messages in a certain response. All failed messages will also get
+     * their status appended to the object. <br/>
+     *
+     * @param {Object} messages The messages (as an array of objects) to check against a response.
+     * @param {[Object]} response The response as gotton it from the backoffice.
+     * @method JOA.getFailedMessages
+     * @return {[Object]} An array containing all the messages that came back with anything other
+     * then a 200 (OK) status.
+     * @private
+     */
+    function getFailedMessages(messages, response) {
+        var i,
+            tmp = [];
+        for(i = 0; i < messages.length; i++) {
+            var msgStatus = getMessageStatus(messages[i], response);
+            if(msgStatus.code !== 200) {
+                messages[i].status = msgStatus;
+                tmp.push(messages[i]);
+            }
+        }
+        return tmp;
+    }
+    /**
      * Posts a constructed JOA payload to the user given url.
      * Will clear the message queue iff the post was successful, so that the object is reusable right after,
-     * and return the results as reported by the backoffice.
+     * and return the results as reported by the backoffice. Resets the message id back to 1.
      *
      * @method JOA.post
+     * @param {Boolean} clear A flag to indicate to clear this object upon a successful post.
      * @param {Function} cb A function used to call back to whenever the HTTP post finishes. It has
      * an error, response and messages parameters.
      * @example
-     JOA.post(function(err, response, messages) {
+     JOA.post(true, function(err, response, messages) {
             if(err) {
                 //something went wrong, the header could of returned an error or
                 //the actual request failed.
@@ -534,7 +727,7 @@ var JOA = (function () {
             }
         });
      */
-    function post(cb) {
+    function post(options, cb) {
         parsePayload(function (err, payload) {
             if (err) {
                 cb(err, null, null);
@@ -556,14 +749,29 @@ var JOA = (function () {
                 http.onreadystatechange = function () {
                     if (http.readyState === XMLHttpRequest.DONE) {
                         if (http.status === 200) {
-                            var messages = parseMessages(),
-                            //decide what to return based on the debug flag
-                                ret = JOA.debug ? http.response.getElementsByTagName("pre")[0].innerHTML : http.responseText;
-                            //if all went well clear the messages and make a callback
-                            clearMessages();
-                            cb(null, ret, messages);
+                            var messagesRaw = parseMessages(),
+                                msgs = messages,
+                                //decide what to return based on the debug flag
+                                respRaw = JOA.debug ? http.response.getElementsByTagName("pre")[0].innerHTML : http.responseText,
+                                respParsed = parseResponse(respRaw),
+                                sucmsgs = getSuccessfulMessages(msgs, respParsed),
+                                failmsgs = getFailedMessages(msgs, respParsed);
+                            //if all went well and the clear param is set to true
+                            //we clear the messages and make a callback
+                            if(options.clear) {
+                                clearMessages();
+                            }
+                            //if the option is set to only clear the success messages, we reset the JOA.messages property
+                            //with the failed messages
+                            if(options.clearOnlySuccess) {
+                                JOA.messages = failmsgs;
+                            }
+                            //reset message id counter
+                            messageId = 0;
+                            cb(null, {raw: respRaw, parsed: respParsed}, 
+                               {raw: messagesRaw, parsed: {success: sucmsgs, failed: failmsgs, all: msgs}});
                         } else {
-                            cb(http.statusText, null, null);
+                            cb({code: http.status, text: http.statusText}, null, null);
                         }
                     }
                 };

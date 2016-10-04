@@ -75,16 +75,22 @@
         //post) the message queue is cleaned and the JOA object can be used
         //again immediately
         console.log("%c Tip: enable 'Log XMLHttpRequests' by right clicking here and press F5", "background: #0a0; color: #fff; font-size: 12px");
-        JOA.post(function(err, response, messages) {
+        JOA.post({
+            clear: false,
+            clearOnylSuccess: true
+        }, function(err, response, messages) {
             if(err) {
                 console.log("%c Oops an error occured: ", "background: #f00; color: #fff; font-size: 18px");
                 console.log(err);
             }
+            
             if(response) {
                 console.log("%c What the backoffice returned: ", "background: #222; color: #bada55; font-size: 18px");
-                console.log(response);
+                console.log(response.parsed);
                 console.log("%c The messages that were sent: ", "background: #222; color: #bada55; font-size: 18px");
-                console.log(messages);
+                console.log(messages.parsed);
+                console.log("%c We set the clear-only-success flag in the options object so the failed messages got reappended: ", "background: #222; color: #bada55; font-size: 18px");
+                console.log(JOA.toString());
             }
         });
     </script>

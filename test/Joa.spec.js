@@ -156,7 +156,7 @@ describe("Hash and secret header attribute", function() {
             },
             gatewayIdentifier: "0.0.0.0"
         });
-        expect(JOA.toString()).toEqual("no_secret_set");
+        expect(JOA.toString()).toEqual("no_secret_set");        
         
         JOA.headers({
             attribute: {
