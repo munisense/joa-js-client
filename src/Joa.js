@@ -294,9 +294,15 @@ var JOA = (function () {
         //loop through all the messages
         for (i = 0; i < messages.length; i += 1) {
             var convertedMessage = "",
-                message = messages[i],
+                message = messages[i];
+            //before we do anything else we check if the message has a status property, this might indicate
+            //that it is a message that is being reused after begin returned from the backoffice, this status
+            //property we dont need
+            if(message.status) {
+                delete message.status;
+            }
             //since every message can vary in number of field we need the number of keys in each object
-                messageKeys = Object.keys(message);
+            var messageKeys = Object.keys(message);
             //for each message key add it to the converted message
             for (j = 0; j < messageKeys.length; j += 1) {
                 convertedMessage += message[messageKeys[j]] + char.tab;
@@ -321,6 +327,14 @@ var JOA = (function () {
     function generateId() {
         messageId += 1;
         return messageId;
+    }
+    /**
+     * Adds a custom object to the queue.<br/>
+     *
+     * @method JOA.addObject
+     */
+    function addObject(obj) {
+        messages.push(obj);
     }
     /**
      * Adds a ZCL report to the message queue.
@@ -591,14 +605,14 @@ var JOA = (function () {
         //we splitted on char.eol chars, each line in the respone ends with a eol char
         //even the last one so to ignore the always empty last element of this array
         //we reduce length with 1
-        for(i = 0; i < splitResponse.length - 1; i++) {
+        for (i = 0; i < splitResponse.length - 1; i+= 1) {
             var splitResponseMessage = splitResponse[i].split(char.tab);
             var referencedMessagesIds = [];
             //we build an array containing all the referenced message ids in this response message
             //because the first and second elements are always an type and a status code we will
             //set j to 2 as initial value, we skip over those elements (the rest are all referenced ids
             //which we actually need)
-            for(j = 2; j < splitResponseMessage.length; j++) {
+            for (j = 2; j < splitResponseMessage.length; j+= 1) {
                 referencedMessagesIds.push(splitResponseMessage[j]);
             }
             //now that we got all the data lets start creating the array to return
@@ -642,19 +656,28 @@ var JOA = (function () {
      * @private
      */
     function getMessageStatus(message, response) {
-        var i, j;
-        for(i = 0; i < response.length; i++) {
+        var i, j,
+            defaultStatus = messageStatus[489];
+        for (i = 0; i < response.length; i += 1) {
             //were only going to loop through status response messages and not timestamp messages
             if(response[i].type === "s") {
                 var messageIds = response[i].messages;
-                for(j = 0; j < messageIds.length; j++) {
+                for (j = 0; j < messageIds.length; j += 1) {
                     if(message.id == messageIds[j]) {
                         return response[i].code;
                     }
                 }
+                //if messageIds is empty it means it is the most occuring message status from the
+                //response, if a status is the occuring in a response all the message ids will be
+                //omitted, so we have to save this status to later return as the default case if a
+                //single message id is not found in none of the response objects
+                if(messageIds.length == 0) {
+                    defaultStatus = response[i].code
+                }
             }
         }
-        return messageStatus[200];
+        //return the default status (the most occuring reponse status).
+        return defaultStatus;
     }
     /**
      * Determines all the successful messages in a certain response. All successful messages will also get
@@ -669,7 +692,7 @@ var JOA = (function () {
     function getSuccessfulMessages(messages, response) {
         var i,
             tmp = [];
-        for(i = 0; i < messages.length; i++) {
+        for (i = 0; i < messages.length; i += 1) {
             var msgStatus = getMessageStatus(messages[i], response);
             if(msgStatus.code === 200) {
                 messages[i].status = msgStatus;
@@ -692,7 +715,7 @@ var JOA = (function () {
     function getFailedMessages(messages, response) {
         var i,
             tmp = [];
-        for(i = 0; i < messages.length; i++) {
+        for (i = 0; i < messages.length; i += 1) {
             var msgStatus = getMessageStatus(messages[i], response);
             if(msgStatus.code !== 200) {
                 messages[i].status = msgStatus;
@@ -702,16 +725,26 @@ var JOA = (function () {
         return tmp;
     }
     /**
-     * Posts a constructed JOA payload to the user given url.
-     * Will clear the message queue iff the post was successful, so that the object is reusable right after,
-     * and return the results as reported by the backoffice. Resets the message id back to 1.
+     * Posts a constructed JOA payload to the user given url. Resets the message id back to 1.
      *
      * @method JOA.post
-     * @param {Boolean} clear A flag to indicate to clear this object upon a successful post.
+     * @param {Object} options An options object to use while posting. These options are available:<br>
+     * - clear {Boolean}: Set to true when the JOA object should be cleared upon a successful post action.<br>
+     * - clearOnlySuccess {Boolean}: Removes all the succes (ack-ed) messages but keeps the failed messages in
+     * the message queue, ready to be resent.
      * @param {Function} cb A function used to call back to whenever the HTTP post finishes. It has
-     * an error, response and messages parameters.
+     * an error, response and messages parameters. The response and messages parameters are objects.
+     * The response object consist of a raw and a parsed property. The raw property will output data as
+     * it was returned by the backoffice. The parsed property will evaluate the raw data and return
+     * Javascript objects, which are easily read. The message object has the same two properties, only
+     * the parsed property is also an object. Consisting of success, failed and
+     * all properties. They contain the 'ack-ed' messages, 'not ack-ed' messages and an array containing
+     * all messages. For an example of this method see 'Examples'.
      * @example
-     JOA.post(true, function(err, response, messages) {
+     JOA.post({
+        clear: false,
+        clearOnlySuccess: true
+     }, function(err, response, messages) {
             if(err) {
                 //something went wrong, the header could of returned an error or
                 //the actual request failed.
@@ -720,10 +753,8 @@ var JOA = (function () {
             if(response) {
                 //we got a response from the server
                 console.log(response);
-                //these are the messages that were parsed and sent to the backoffice
-                //these messages are no longer accessible after the post() call as they
-                //will be cleared upon a HTTP 200 response
-                console.log(messages);
+                //these are the messages that were raw and sent to the backoffice
+                console.log(messages.raw);
             }
         });
      */
@@ -764,7 +795,7 @@ var JOA = (function () {
                             //if the option is set to only clear the success messages, we reset the JOA.messages property
                             //with the failed messages
                             if(options.clearOnlySuccess) {
-                                JOA.messages = failmsgs;
+                                messages = failmsgs;
                             }
                             //reset message id counter
                             messageId = 0;
@@ -838,6 +869,7 @@ var JOA = (function () {
     JOA.prototype.constructor = JOA;
     //JOA methods
     JOA.headers = headers;
+    JOA.addObject = addObject;
     JOA.addZCLReport = addZCLReport;
     JOA.addZCLMultiReport = addZCLMultiReport;
     JOA.addZCLCommand = addZCLCommand;
