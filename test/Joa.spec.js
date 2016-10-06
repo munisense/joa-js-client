@@ -287,3 +287,46 @@ describe("Md5 hashing functionality", function() {
         expect(JOA.md5("munisense_test_12345_!@#$%")).toEqual("a29f04502785f7a55253d1f13ae6f487");
     });
 });
+
+describe("Adding a custom Javascript object to the message queue", function() {    
+    it("should be added and be able to be parsed by JOA", function() {
+        JOA.addObject({
+            id: 999,
+            hallo: "wereld",
+            "dit": "iseen",
+            test: true
+        });
+        expect(JOA.toHash()).toEqual("dcde3905c7b05956dc0cf9b3af53b6e5");
+    });
+});
+
+describe("Get a sinlge message and all messages from the queue", function() {    
+    it("should return the Javascript object(s) intact", function() {
+        expect(JOA.getMessage(999)).toEqual({
+            id: 999,
+            hallo: "wereld",
+            "dit": "iseen",
+            test: true
+        });
+        expect(JOA.getMessages()).toEqual([
+            {
+                id: 10,
+                messageType: 2,
+                eui64: 'f104:00ff:0000:0001',
+                endpointId: '0x0a',
+                profileId: '0xf100',
+                clusterId: '0x0402',
+                isClusterSpecific: '1',
+                commandId: '0x12',
+                timestamp: 1474552384381,
+                value: 'dGVzdA=='
+            },
+            {
+                id: 999,
+                hallo: 'wereld',
+                dit: 'iseen',
+                test: true
+            }
+        ]);
+    });
+});

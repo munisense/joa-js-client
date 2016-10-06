@@ -76,8 +76,8 @@
         //again immediately
         console.log("%c Tip: enable 'Log XMLHttpRequests' by right clicking here and press F5", "background: #0a0; color: #fff; font-size: 12px");
         JOA.post({
-            clear: false,
-            clearOnlySuccess: true
+            clear: true,
+            clearOnlySuccess: false
         }, function(err, response, messages) {
             if(err) {
                 console.log("%c Oops an error occured: ", "background: #f00; color: #fff; font-size: 18px");
@@ -94,8 +94,6 @@
                 console.log(response.parsed);
                 console.log("%c The messages that were sent: ", "background: #222; color: #bada55; font-size: 18px");
                 console.log(messages.parsed);
-                console.log("%c We set the clear-only-success flag to true and append a successful messsage to the message queue: ", "background: #222; color: #bada55; font-size: 18px");
-                console.log(JOA.toString());
             }
         });
     </script>

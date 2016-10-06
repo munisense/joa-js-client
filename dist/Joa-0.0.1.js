@@ -1,6 +1,5 @@
 /**
  * JOA.js, provides a way to communicate with the backoffice of Munisense using Javascript.<br />
- * NOTE: this implementation does not support TAZFrame.
  * Created by Alex Burghardt, https://github.com/aal89<br />
  * license MIT, http://www.opensource.org/licenses/mit-license<br />
  * Project Page: https://github.com/munisense/JOA-js-client<br />
@@ -177,7 +176,9 @@ var JOA = (function () {
      * Knowledge of the ms-tech-141003-3 document and the ZigBee cluster specification is required. <br /><br />
      * There is no need to 'new' this object as that is being done for you. Usage is through the JOA() object. For
      * an example implementation see 'examples'. All requests made to the backoffice are made asynchronously.<br /><br />
-     * Currently this implementation only supports the MuniRPC version 2 protocol (JOA3).<br/><br />
+     * Currently this implementation only supports the MuniRPC version 2 protocol (JOA3).
+     * Please note that there's no support for ZCLFrame's in a response from the backoffice and security levels 1 and 2 are
+     * not supported. <br/><br />
      * ZigBee cluster specification: https://people.ece.cornell.edu/land/courses/ece4760/FinalProjects/s2011/kjb79_ajm232/pmeter/ZigBee%20Cluster%20Library.pdf
      *
      * @class JOA
@@ -503,6 +504,31 @@ var JOA = (function () {
         messages = [];
     }
     /**
+     * Returns all the messages in the queue. <br/>
+     *
+     * @method JOA.getMessages
+     * @return {[Object]} An array of Javascript objects.
+     */
+    function getMessages() {
+        return messages;
+    }
+    /**
+     * Gets a sinlge message from the queue. Does not remove the message. <br/>
+     *
+     * @param id The id of the message.
+     * @method JOA.getMessage
+     * @return {Object} A message object if one is found, an empty object otherwise.
+     */
+    function getMessage(id) {
+        var i;
+        for (i = 0; i < messages.length; i += 1) {
+            if (messages[i].id === id) {
+                return messages[i];
+            }
+        }
+        return {};
+    }
+    /**
      * Removes a sinlge message from the queue. <br/>
      *
      * @param id The id of the message to be removed.
@@ -637,14 +663,13 @@ var JOA = (function () {
         return tmp;
     }
     /**
-     * Gets the status of a message based on a given response set. This response set should be an array
-     * containing all messages as Javascript objects.<br/>
+     * Gets the status of a message based on a given parsed response. This parsed response should be
+     * an array containing all messages as Javascript objects.<br/>
      *
      * @param {Object} message The message (as an object) to check against a response.
-     * @param {[Object]} response The response as gotton it from the backoffice.
+     * @param {[Object]} response The response.
      * @method JOA.getMessageStatus
-     * @return {Object} An object containing the status of the message in the format in the example. Or
-     * status '200' if the message was not found in the response.
+     * @return {Object} An object containing the status of the message in the format in the example.
      * @example
      getMessageStatus(messageObj, respObj);
      Returns:
@@ -669,14 +694,15 @@ var JOA = (function () {
                 }
                 //if messageIds is empty it means it is the most occuring message status from the
                 //response, if a status is the occuring in a response all the message ids will be
-                //omitted, so we have to save this status to later return as the default case if a
+                //omitted, so we have to save this status to later return this as the default case if a
                 //single message id is not found in none of the response objects
-                if(messageIds.length == 0) {
-                    defaultStatus = response[i].code
+                if(messageIds.length === 0) {
+                    defaultStatus = response[i].code;
                 }
             }
         }
-        //return the default status (the most occuring reponse status).
+        //return the default status (the most occuring reponse status). Usually this is 200, but it
+        //can also be something different in some cases
         return defaultStatus;
     }
     /**
@@ -725,14 +751,19 @@ var JOA = (function () {
         return tmp;
     }
     /**
-     * Posts a constructed JOA payload to the user given url. Resets the message id back to 1.
+     * Posts a constructed JOA payload to the user given url.<br>
+     * Note: this method only resets the message id counter is the object is cleared of
+     * all messages, whenever it has message after a post action it will continue to use
+     * the current counter.
      *
      * @method JOA.post
-     * @param {Object} options An options object to use while posting. These options are available:<br>
+     * @param {Object} [options] An options object to use while posting. These options are available:<br>
      * - clear {Boolean}: Set to true when the JOA object should be cleared upon a successful post action.<br>
      * - clearOnlySuccess {Boolean}: Removes all the succes (ack-ed) messages but keeps the failed messages in
-     * the message queue, ready to be resent.
-     * @param {Function} cb A function used to call back to whenever the HTTP post finishes. It has
+     * the message queue, ready to be resent.<br>
+     * - resetMessageIdsTo {Integer}: An number to reset the message id counter to whenever the post successfully
+     * posts to the backoffice. 0 is default.
+     * @param {Function} [cb] A function used to call back to whenever the HTTP post finishes. It has
      * an error, response and messages parameters. The response and messages parameters are objects.
      * The response object consist of a raw and a parsed property. The raw property will output data as
      * it was returned by the backoffice. The parsed property will evaluate the raw data and return
@@ -742,8 +773,9 @@ var JOA = (function () {
      * all messages. For an example of this method see 'Examples'.
      * @example
      JOA.post({
-        clear: false,
-        clearOnlySuccess: true
+        clear: true,
+        clearOnlySuccess: true,
+        resetMessageIdsTo: 1080
      }, function(err, response, messages) {
             if(err) {
                 //something went wrong, the header could of returned an error or
@@ -781,7 +813,7 @@ var JOA = (function () {
                     if (http.readyState === XMLHttpRequest.DONE) {
                         if (http.status === 200) {
                             var messagesRaw = parseMessages(),
-                                msgs = messages,
+                                msgs = getMessages(),
                                 //decide what to return based on the debug flag
                                 respRaw = JOA.debug ? http.response.getElementsByTagName("pre")[0].innerHTML : http.responseText,
                                 respParsed = parseResponse(respRaw),
@@ -789,19 +821,26 @@ var JOA = (function () {
                                 failmsgs = getFailedMessages(msgs, respParsed);
                             //if all went well and the clear param is set to true
                             //we clear the messages and make a callback
-                            if(options.clear) {
+                            if(options && options.clear) {
                                 clearMessages();
                             }
                             //if the option is set to only clear the success messages, we reset the JOA.messages property
                             //with the failed messages
-                            if(options.clearOnlySuccess) {
+                            if(options && options.clearOnlySuccess) {
                                 messages = failmsgs;
                             }
-                            //reset message id counter
-                            messageId = 0;
-                            cb(null, {raw: respRaw, parsed: respParsed}, 
-                               {raw: messagesRaw, parsed: {success: sucmsgs, failed: failmsgs, all: msgs}});
-                        } else {
+                            
+                            //reset message id counter only when all messages are cleared, otherwise we might
+                            //run into duplicate id's
+                            if(getMessages().length === 0)
+                                messageId = (options && options.resetMessageIdsTo) || 0;
+                            if(cb) {
+                                cb(null, {raw: respRaw, parsed: respParsed}, 
+                                   {raw: messagesRaw, parsed: {success: sucmsgs, failed: failmsgs, all: msgs}});
+                            }
+                        //this else block responsibility is only to make a callback, so we can check that in the
+                        //else if statement if the function actually exists
+                        } else if(cb) {
                             cb({code: http.status, text: http.statusText}, null, null);
                         }
                     }
@@ -873,6 +912,8 @@ var JOA = (function () {
     JOA.addZCLReport = addZCLReport;
     JOA.addZCLMultiReport = addZCLMultiReport;
     JOA.addZCLCommand = addZCLCommand;
+    JOA.getMessage = getMessage;
+    JOA.getMessages = getMessages;
     JOA.clearMessages = clearMessages;
     JOA.removeMessage = removeMessage;
     JOA.toString = toString;
