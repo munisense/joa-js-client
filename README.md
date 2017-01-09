@@ -10,7 +10,7 @@ ZigBee cluster specification: https://people.ece.cornell.edu/land/courses/ece476
 ### Installation
 To use this software simply include it into your HTML file like so:
 ```html
-<script src="/dist/JOA-0.0.1.js".js></script>A
+<script src="/dist/JOA-0.0.1.js".js></script>
 ```
 Afterwards the JOA object should accessible on the global scope.
 ### Contribute
